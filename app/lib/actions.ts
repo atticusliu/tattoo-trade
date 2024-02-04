@@ -1,11 +1,11 @@
 "use server"
 
-import { signIn } from "@/auth"
+import { signIn } from "@/app/auth"
 
 export async function authenticate(formData: FormData) {
   try {
     await signIn("credentials", formData)
-  } catch (error) {
+  } catch (error: any) {
     if (error) {
       switch (error.type) {
         case "CredentialsSignin":
