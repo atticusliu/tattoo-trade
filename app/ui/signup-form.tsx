@@ -8,10 +8,22 @@ export function SignupForm() {
   return (
     <form action={action}>
       <div>
-        <label htmlFor="name">Name</label>
-        <input id="name" name="name" placeholder="Name" />
+        <label htmlFor="firstName">First Name</label>
+        <input id="firstName" name="firstName" placeholder="Jane" />
       </div>
-      {state?.errors?.name && <p>{state.errors.name}</p>}
+      {state?.errors?.firstName && <p>{state.errors.firstName}</p>}
+
+      <div>
+        <label htmlFor="lastName">Last Name</label>
+        <input id="lastName" name="lastName" placeholder="Smith" />
+      </div>
+      {state?.errors?.lastName && <p>{state.errors.lastName}</p>}
+
+      <div>
+        <label htmlFor="username">Username</label>
+        <input id="username" name="username" placeholder="janesmith3" />
+      </div>
+      {state?.errors?.username && <p>{state.errors.username}</p>}
 
       <div>
         <label htmlFor="email">Email</label>

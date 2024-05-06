@@ -1,10 +1,20 @@
 import { z } from 'zod';
 
 export const SignupFormSchema = z.object({
-  name: z
+  firstName: z
     .string()
-    .min(2, { message: "Name must be at least 2 characters long." })
-    .max(255, { message: "Name must be at most 255 characters long." })
+    .min(1, { message: "First name must be at least 1 character long." })
+    .max(10, { message: "First name must be at most 100 characters long." })
+    .trim(),
+  lastName: z
+    .string()
+    .min(1, { message: "Last name must be at least 1 characters long." })
+    .max(100, { message: "Last name must be at most 100 characters long." })
+    .trim(),
+  username: z
+    .string()
+    .min(1, { message: "Username must be at least 1 characters long." })
+    .max(100, { message: "Username must be at most 100 characters long." })
     .trim(),
   email: z.string().email({ message: "Please enter a valid email." }).trim(),
   password: z
@@ -26,9 +36,22 @@ export type FormState = | {
   }
 } | undefined;
 
+export type User = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  isAdmin: boolean;
+};
+
 export type Item = {
   id: number;
   description: string;
   category: string;
   amount: number;
 };
+
+export type SessionPayload = {
+  userId: string;
+  expiresAt: Date;
+}
