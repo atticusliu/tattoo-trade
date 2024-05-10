@@ -50,8 +50,3 @@ export type Item = {
   category: string;
   amount: number;
 };
-
-export type SessionPayload = {
-  userId: string;
-  expiresAt: Date;
-}

@@ -1,9 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { decrypt } from '@/lib/session';
-import { cookies } from 'next/headers';
-import { JWTPayload } from 'jose';
+import { NextRequest } from 'next/server';
+import { updateSession } from '@/utils/supabase/middleware';
 
 // --- for the routes below, add ad hoc ---
+// TODO: assess the below as we go along
 
 // protected routes
 const protectedRoutes:string[] = [
@@ -23,29 +22,18 @@ const publicRoutes:string[] = [
 ];
 
 export async function middleware(req: NextRequest) {
-  // check if current route is protected or public
-  const path:string = req.nextUrl.pathname;
-  const isProtectedRoute:boolean = protectedRoutes.includes(path);
-  const isPublicRoute:boolean = publicRoutes.includes(path);
-
-  // decrypt session from cookie
-  const cookie:string|undefined = cookies().get('session')?.value;
-  const session:JWTPayload|undefined = await decrypt(cookie);
-
-  // redirect to /login if user isn't authenticated
-  if (isProtectedRoute && !session?.userId) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl))
-  }
-
-  // redirect to /dashboard if user is authenticated
-  if (isPublicRoute && session?.userId && !req.nextUrl.pathname.startsWith('/dashboard')) {
-    return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
-  }
-
-  return NextResponse.next();
+  return await updateSession(req);
 }
 
-// routes middleware shouldn't run on
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 }

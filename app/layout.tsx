@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "Buy and sell tattoo gear and supplies",
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" data-mode="light">
       <body>
